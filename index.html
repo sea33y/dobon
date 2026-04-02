@@ -17,6 +17,7 @@
 <script type="text/babel">
 const {useState,useEffect}=React;
 
+  
 function App(){
 
 const panel="bg-white rounded-2xl shadow p-4 mb-4";
@@ -61,6 +62,158 @@ const [target,setTarget]=useState(null);
 const [result,setResult]=useState([]);
 const [rank,setRank]=useState([]);
 
+/* ===== ルールモーダル ===== */
+const [showRuleModal, setShowRuleModal] = useState(false); // ルールモーダルの状態
+/* ===== ルールモーダル ===== */
+    const RuleModal = () => {
+        return (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white p-4 rounded-xl w-3/4 max-w-lg">
+                    <h1 className="font-bold text-xl mb-4">ルール</h1>
+                    <p className="text-sm whitespace-pre-line">
+                        {/* ルールの内容 */}
+                        <strong>■ゲームの目的</strong><br />
+                    手札の数字の合計をできるだけ小さくし、ラウンド終了時の合計点が一番少ない人が勝ち。<br /><br />
+
+                    <strong>■準備</strong><br />
+                    ジョーカーを覗いた52枚のトランプを使用する。<br />
+                    各プレイヤーに4枚ずつ配り、残りのカードを山札とする。<br />
+                    山札の一番上をめくって場に出す。<br /><br />
+
+                    <strong>■基本</strong><br />
+                    自分の番では、場のカードと同じ「数字」または「マーク」のカードを1枚出せる。<br />
+                    出せない場合は山札から1枚引く。<br /><br />
+
+                    <strong>■ページ1</strong><br />
+                    手札が1枚になったら「ページ1」と言う。<br />
+                    言い忘れて他の人に指摘されたらペナルティでカードを2枚引く。<br /><br />
+
+                    <strong>■ドボン</strong><br />
+                    自分の番でなくても、場の数字と手札の合計が同じになったら「ドボン！」と言ってすぐカードを出すことができる。<br />
+                    成功するとそのラウンドは終了する。<br />
+                    そして他のプレイヤーの手札の合計が点数になる。<br /><br />
+
+                    <strong>■ドボン返し</strong><br />
+                    誰かがドボンした瞬間、自分の手札の合計も同じ数字ならすぐに「ドボン返し！」と言って出すことができる。<br />
+                    その場合返した人が勝ちになる。<br /><br />
+
+                    <strong>■ウルトラドボン</strong><br />
+                    山札から最初にめくった1枚と手札の合計が同じなら「ウルトラドボン！」と言って出すことができる。<br />
+                    成功すればその人の勝ちになる。<br /><br />
+
+                    <strong>■特殊カード</strong><br />
+                    <strong>・2</strong><br />
+                    次の人は2枚引く。<br />
+                    2を出せば累積できる。<br />
+                    （例：2 → 2 → 2 → 6枚引き）<br />
+                    <strong>・8</strong><br />
+                    マークを変更できる。<br />
+                    好きなマークを宣言する。<br /><br />
+
+                    <strong>■点数について</strong><br />
+                    ラウンドごとに手札点数を入力する。<br />
+                    累計点数が低い人が勝ち。<br /><br />
+                    なお、このサイトでは手札の点数を入力すればよい。<br /><br />
+
+                    <strong>■素上がり</strong><br />
+                    通常終了。（手札）点数をそのまま加算。<br /><br />
+
+                    <strong>■ドボン</strong><br />
+                    ドボンした人：-50点<br />
+                    ドボンされた人：（手札+ドボンした人の手札）+50点×ドボンした人の数<br /><br />
+
+                    <strong>■ドボン返し</strong><br />
+                    返した人：-100点×人数<br />
+                    ドボンした人：（手札+ドボン返しした人の手札）+100点<br /><br />
+
+                    <strong>■ウルトラドボン</strong><br />
+                    成功者：-(人数-成功者の数)×50点<br />
+                    他全員：（手札+ウルトラドボンした人の手札）+50点×ウルトラドボンした人の数<br /><br />
+
+                    <strong>■半額ルール</strong><br />
+                    累計が100の倍数（>0）になると累計点数が半分になる。<br />
+                </p>
+            </div>
+
+            {/* 参考点数表 */}
+            <div className={panel}>
+                <h2 className="font-bold mb-2">■参考点数表</h2>
+                <table className="table-auto w-full text-sm">
+                    <thead>
+                        <tr>
+                            <th className="px-4 py-2">カード</th>
+                            <th className="px-4 py-2">点数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td className="px-4 py-2">1</td>
+                            <td className="px-4 py-2">1点</td>
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2">2</td>
+                            <td className="px-4 py-2">50点</td>
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2">3</td>
+                            <td className="px-4 py-2">3点</td>
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2">4</td>
+                            <td className="px-4 py-2">4点</td>
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2">5</td>
+                            <td className="px-4 py-2">5点</td>
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2">6</td>
+                            <td className="px-4 py-2">6点</td>
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2">7</td>
+                            <td className="px-4 py-2">7点</td>
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2">8</td>
+                            <td className="px-4 py-2">40点</td>
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2">9</td>
+                            <td className="px-4 py-2">9点</td>
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2">10</td>
+                            <td className="px-4 py-2">10点</td>
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2">J (ジャック)</td>
+                            <td className="px-4 py-2">10点</td>
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2">Q (クイーン)</td>
+                            <td className="px-4 py-2">10点</td>
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2">K (キング)</td>
+                            <td className="px-4 py-2">10点</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+                    <button
+                        className="w-full bg-black text-white p-2 mt-4"
+                        onClick={() => setShowRuleModal(false)} // モーダルを閉じる
+                    >
+                        閉じる
+                    </button>
+                </div>
+            </div>
+        );
+    };
+
+  
 /* ===== 保存 ===== */
 useEffect(()=>{ save({page,n,r,names,state}); },[page,n,r,names,state]);
 
