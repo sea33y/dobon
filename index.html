@@ -108,7 +108,7 @@ if(type==="ウルトラドボン"&&dobon.length===0)return;
 
 switch(type){
 
-case "巣上がり":
+case "素上がり":
 score=[...base];
 break;
 
@@ -228,7 +228,7 @@ return(
 <p className="text-sm whitespace-pre-line">
 手札の合計を小さくするゲーム
 
-■巣上がり
+■素上がり
 そのまま加算
 
 ■ドボン
@@ -356,7 +356,7 @@ return(
 onChange={e=>{setType(e.target.value);invalidate();}}
 className="border p-2 w-full">
 <option>選択</option>
-<option>巣上がり</option>
+<option>素上がり</option>
 <option>ドボン</option>
 <option>ドボン返し</option>
 <option>ウルトラドボン</option>
@@ -465,7 +465,7 @@ invalidate();
             const isTarget=state.roundTargetIdx[ri]===i;
             
             let color="text-black";
-            if(state.roundType[ri]==="巣上がり") color="text-green-500";
+            if(state.roundType[ri]==="素上がり") color="text-green-500";
             else if(isDobon) color="text-red-500";
             else if(isTarget) color="text-blue-500";
             
