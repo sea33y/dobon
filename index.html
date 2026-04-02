@@ -199,24 +199,21 @@ alert("コピーしました");
 };
 
 /* ===== START ===== */
-if(page==="start"){
-return(
-<div className="flex h-screen items-center justify-center">
-<div className="w-80">
+if(page==="start" || page==="init" || page==="game" || page==="result"){
+    return (
+        <div className="flex h-screen items-center justify-center">
+            <div className="w-80">
+                <div className={panel}>
+                    <h1 className="text-xl font-bold mb-3">ドボン計算</h1>
+                    <button className="w-full bg-black text-white p-3 mb-2"
+                        onClick={() => setPage("init")}>開始</button>
 
-<div className={panel}>
-<h1 className="text-xl font-bold mb-3">ドボン計算</h1>
-
-<button className="w-full bg-black text-white p-3 mb-2"
-onClick={()=>setPage("init")}>開始</button>
-
-<button className="w-full bg-gray-300 p-2"
-onClick={()=>setPage("rule")}>ルール</button>
-</div>
-
-</div>
-</div>
-);
+                    <button className="w-full bg-gray-300 p-2"
+                        onClick={() => setPage("rule")}>ルール</button>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 /* ===== RULE ===== */
@@ -484,7 +481,6 @@ invalidate();
   {rank.map((r,i)=><div key={i}>{r}</div>)}
 </div>
 
-{/* 履歴 */}
 {/* 履歴 */}
 <div className={`${panel} h-64 overflow-y-auto`}>
   <div className={title}>履歴</div>
