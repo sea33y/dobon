@@ -199,22 +199,31 @@ alert("コピーしました");
 };
 
 /* ===== START ===== */
-if(page==="start" || page==="init" || page==="game" || page==="result"){
+if (page === "start") {
     return (
         <div className="flex h-screen items-center justify-center">
             <div className="w-80">
                 <div className={panel}>
                     <h1 className="text-xl font-bold mb-3">ドボン計算</h1>
-                    <button className="w-full bg-black text-white p-3 mb-2"
-                        onClick={() => setPage("init")}>開始</button>
+                    <button 
+                        className="w-full bg-black text-white p-3 mb-2"
+                        onClick={() => setPage("init")} // スタートページから即設定ページへ遷移
+                    >
+                        開始
+                    </button>
 
-                    <button className="w-full bg-gray-300 p-2"
-                        onClick={() => setPage("rule")}>ルール</button>
+                    <button 
+                        className="w-full bg-gray-300 p-2"
+                        onClick={() => setPage("rule")} // ルールページに遷移
+                    >
+                        ルール
+                    </button>
                 </div>
             </div>
         </div>
     );
 }
+
 
 /* ===== RULE ===== */
 if(page==="rule"){
