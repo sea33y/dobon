@@ -131,7 +131,7 @@ const [showRuleModal, setShowRuleModal] = useState(false); // ルールモーダ
                     他全員：（手札+ウルトラドボンした人の手札）+50点×ウルトラドボンした人の数<br /><br />
 
                     <strong>■半額ルール</strong><br />
-                    累計が100の倍数（>0）になると累計点数が半分になる。<br />
+                    累計が100の倍数になると累計点数が半分になる。<br />
                 </p>
             </div>
 
@@ -300,7 +300,7 @@ let half=Array(state.n).fill(false);
 let before=Array(state.n).fill(0);
 
 for(let j=0;j<state.n;j++){
-if(newScores[j]>0 && newScores[j]%100===0){
+if(newScores[j]!==0 && newScores[j]%100===0){
 before[j]=newScores[j];
 newScores[j]/=2;
 half[j]=true;
